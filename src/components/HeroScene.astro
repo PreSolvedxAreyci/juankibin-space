@@ -1,0 +1,152 @@
+---
+---
+<div class="hero-scene" aria-hidden="true">
+  <canvas id="jk-canvas"></canvas>
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+  <div class="mesh-grid"></div>
+</div>
+
+<style>
+  .hero-scene {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  #jk-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.55;
+    animation: float 12s ease-in-out infinite;
+  }
+  .orb-a {
+    width: min(42vw, 380px);
+    height: min(42vw, 380px);
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.7), transparent 70%);
+    top: 8%;
+    right: 8%;
+  }
+  .orb-b {
+    width: min(30vw, 260px);
+    height: min(30vw, 260px);
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.45), transparent 70%);
+    bottom: 12%;
+    right: 28%;
+    animation-delay: -4s;
+  }
+  .orb-c {
+    width: min(24vw, 200px);
+    height: min(24vw, 200px);
+    background: radial-gradient(circle, rgba(192, 132, 252, 0.4), transparent 70%);
+    top: 40%;
+    left: 45%;
+    animation-delay: -7s;
+  }
+  .mesh-grid {
+    position: absolute;
+    inset: -20%;
+    background-image:
+      linear-gradient(rgba(168, 85, 247, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168, 85, 247, 0.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+    transform: perspective(600px) rotateX(62deg) translateY(-10%);
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    opacity: 0.45;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-18px, 22px, 0) scale(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .orb { animation: none; }
+  }
+</style>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script is:inline>
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (typeof THREE === 'undefined') return;
+    var canvas = document.getElementById('jk-canvas');
+    if (!canvas) return;
+
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.z = 6.2;
+
+    var group = new THREE.Group();
+    scene.add(group);
+
+    var geo = new THREE.IcosahedronGeometry(1.55, 1);
+    var mat = new THREE.MeshBasicMaterial({
+      color: 0xa855f7,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.55,
+    });
+    var mesh = new THREE.Mesh(geo, mat);
+    group.add(mesh);
+
+    var inner = new THREE.Mesh(
+      new THREE.OctahedronGeometry(0.72, 0),
+      new THREE.MeshBasicMaterial({ color: 0xf59e0b, wireframe: true, transparent: true, opacity: 0.7 })
+    );
+    group.add(inner);
+
+    var pointsGeo = new THREE.BufferGeometry();
+    var count = 180;
+    var positions = new Float32Array(count * 3);
+    for (var i = 0; i < count; i++) {
+      var r = 2.2 + Math.random() * 1.8;
+      var theta = Math.random() * Math.PI * 2;
+      var phi = Math.acos(2 * Math.random() - 1);
+      positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3 + 2] = r * Math.cos(phi);
+    }
+    pointsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    var points = new THREE.Points(
+      pointsGeo,
+      new THREE.PointsMaterial({ color: 0xc084fc, size: 0.035, transparent: true, opacity: 0.85 })
+    );
+    group.add(points);
+
+    function resize() {
+      var parent = canvas.parentElement;
+      var w = parent.clientWidth;
+      var h = parent.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var t0 = performance.now();
+    function frame(now) {
+      var t = (now - t0) / 1000;
+      mesh.rotation.x = t * 0.18;
+      mesh.rotation.y = t * 0.28;
+      inner.rotation.x = -t * 0.35;
+      inner.rotation.z = t * 0.22;
+      points.rotation.y = t * 0.08;
+      group.rotation.y = Math.sin(t * 0.2) * 0.15;
+      renderer.render(scene, camera);
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+</script>

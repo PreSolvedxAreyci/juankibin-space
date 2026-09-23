@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import HeroScene from '../components/HeroScene.astro';
+
+const skills = [
+  {
+    title: 'Product & systems',
+    body: 'Turning messy real-world workflows into clear tools — from idea to something people can actually use.',
+  },
+  {
+    title: 'Cloud & web',
+    body: 'Modern static sites, Azure hosting, integrations, and practical automation that stay maintainable.',
+  },
+  {
+    title: 'Founder mode',
+    body: 'Building PreSolved Solutions — helping businesses replace manual process with technology that fits.',
+  },
+];
+
+const stack = [
+  'TypeScript',
+  'Astro',
+  'React',
+  '.NET',
+  'Azure',
+  'GitHub Actions',
+  'Node.js',
+  'SQL',
+];
+
+const projects = [
+  {
+    name: 'PreSolved Solutions',
+    tag: 'Company',
+    body: 'My company — consulting and delivery for cloud, security, hardware, and process modernization. Marketing site at presolved.juankibin.space.',
+    href: 'https://presolved.juankibin.space',
+  },
+  {
+    name: 'TapTrack',
+    tag: 'Product',
+    body: 'Smart NFC-based student attendance for Philippine schools — marketing site and product work under the juankibin handle.',
+    href: 'https://github.com/juankibin/TapTrack-Website',
+  },
+  {
+    name: 'This site',
+    tag: 'Personal',
+    body: 'juankibin.space — a single-page personal presence with a custom mark and a light 3D hero, hosted on Azure Static Web Apps.',
+    href: 'https://juankibin.space',
+  },
+];
+---
+<BaseLayout>
+  <Header />
+  <main id="top">
+    <section class="hero section">
+      <HeroScene />
+      <div class="container hero-content">
+        <p class="section-label">Personal site</p>
+        <h1>
+          Hi, I’m <span class="grad">Kevin</span>.
+          <br />I build useful technology.
+        </h1>
+        <p class="lead">
+          John Kevin Asprec — better known as <strong>juankibin</strong>. Founder of PreSolved Solutions.
+          I care about clean systems, honest craft, and shipping things that hold up in the real world.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="mailto:johnkevin.asprec@gmail.com">Email me</a>
+          <a class="btn btn-ghost" href="#projects">See projects</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container about-grid">
+        <div>
+          <p class="section-label">About</p>
+          <h2>Builder, founder, still learning in public.</h2>
+        </div>
+        <div class="about-copy">
+          <p>
+            I’m based in the Philippines and spend most of my time turning vague “we should automate this”
+            conversations into working software and infrastructure.
+          </p>
+          <p>
+            Through <strong>PreSolved Solutions</strong> I help businesses and individuals replace manual
+            processes with practical technology — consultation, cloud, security, and hardware when it matters.
+          </p>
+          <p>
+            This site is personal. It’s not a pitch deck and it doesn’t invent case studies — just who I am
+            and how to reach me.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="section section-alt">
+      <div class="container">
+        <p class="section-label">What I do</p>
+        <h2>Skills &amp; focus</h2>
+        <p class="lead" style="margin-bottom: 2rem;">
+          A mix of product thinking, full-stack delivery, and the unglamorous ops that keep things online.
+        </p>
+        <div class="grid-3">
+          {skills.map((s) => (
+            <article class="card">
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </article>
+          ))}
+        </div>
+        <div class="stack-row">
+          {stack.map((t) => (
+            <span class="pill">{t}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container">
+        <p class="section-label">Projects</p>
+        <h2>Selected work</h2>
+        <p class="lead" style="margin-bottom: 2rem;">
+          Honest highlights — company work, open product experiments, and this site itself.
+        </p>
+        <div class="grid-2">
+          {projects.map((p) => (
+            <article class="card project-card">
+              <div class="project-top">
+                <h3>{p.name}</h3>
+                <span class="pill">{p.tag}</span>
+              </div>
+              <p>{p.body}</p>
+              <a class="project-link" href={p.href} rel="noopener noreferrer" target="_blank">
+                Visit →
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section section-alt">
+      <div class="container contact-panel card">
+        <p class="section-label">Contact</p>
+        <h2>Let’s talk.</h2>
+        <p class="lead">
+          For collaborations, PreSolved work, or a quick hello — email is best.
+        </p>
+        <a class="btn btn-primary" href="mailto:johnkevin.asprec@gmail.com">
+          johnkevin.asprec@gmail.com
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: min(92vh, 820px);
+    display: flex;
+    align-items: center;
+    padding-top: clamp(3rem, 8vw, 5rem);
+    padding-bottom: clamp(4rem, 10vw, 6rem);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 40rem;
+  }
+  .grad {
+    background: linear-gradient(120deg, #e9d5ff 10%, #c084fc 45%, #fbbf24 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.75rem;
+  }
+  .hero strong {
+    color: var(--text);
+  }
+  .about-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 860px) {
+    .about-grid {
+      grid-template-columns: 1fr 1.2fr;
+      align-items: start;
+    }
+  }
+  .about-copy strong {
+    color: var(--violet-bright);
+  }
+  .section-alt {
+    background: linear-gradient(180deg, rgba(20, 20, 31, 0.55), transparent);
+  }
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 2rem;
+  }
+  .project-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .project-top h3 {
+    margin: 0;
+  }
+  .project-link {
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  .contact-panel {
+    text-align: center;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    background:
+      radial-gradient(ellipse at top, rgba(168, 85, 247, 0.18), transparent 55%),
+      var(--bg-card);
+  }
+  .contact-panel .lead {
+    margin-inline: auto;
+    margin-bottom: 1.75rem;
+  }
+</style>

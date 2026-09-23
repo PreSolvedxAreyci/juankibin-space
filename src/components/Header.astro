@@ -1,0 +1,138 @@
+---
+const links = [
+  { href: '#about', label: 'About' },
+  { href: '#work', label: 'What I do' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#top" aria-label="juankibin home">
+      <img src="/brand/logo.svg" alt="" width="36" height="36" />
+      <span>juankibin</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      {links.map((l) => (
+        <a href={l.href}>{l.label}</a>
+      ))}
+    </nav>
+    <a class="btn btn-primary header-cta" href="mailto:johnkevin.asprec@gmail.com">Say hello</a>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span>
+    </button>
+  </div>
+  <div id="mobile-nav" class="mobile-nav" hidden>
+    <div class="container">
+      {links.map((l) => (
+        <a href={l.href}>{l.label}</a>
+      ))}
+      <a class="btn btn-primary" href="mailto:johnkevin.asprec@gmail.com">Say hello</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(18px);
+    background: rgba(7, 7, 10, 0.72);
+    border-bottom: 1px solid rgba(168, 85, 247, 0.12);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 4.25rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--text);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-right: auto;
+  }
+  .brand img {
+    width: 36px;
+    height: 36px;
+  }
+  .nav {
+    display: none;
+    gap: 1.35rem;
+  }
+  .nav a {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 500;
+  }
+  .nav a:hover {
+    color: var(--violet-bright);
+  }
+  .header-cta {
+    display: none;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.88rem;
+  }
+  .nav-toggle {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.03);
+    display: grid;
+    place-content: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+  }
+  .mobile-nav {
+    border-top: 1px solid var(--border);
+    padding: 1rem 0 1.25rem;
+  }
+  .mobile-nav a {
+    display: block;
+    padding: 0.7rem 0;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .mobile-nav .btn {
+    margin-top: 0.75rem;
+    width: 100%;
+  }
+  @media (min-width: 860px) {
+    .nav,
+    .header-cta {
+      display: inline-flex;
+    }
+    .nav-toggle,
+    .mobile-nav {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const panel = document.getElementById('mobile-nav');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    if (panel) panel.hidden = open;
+  });
+  panel?.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      if (panel) panel.hidden = true;
+      toggle?.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>

@@ -1,0 +1,18 @@
+{
+  "name": "juankibin-space",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal website for John Kevin Asprec (juankibin).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "5.18.2"
+  },
+  "engines": {
+    "node": ">=20.3.0"
+  }
+}
