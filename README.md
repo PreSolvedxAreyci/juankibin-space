@@ -7,6 +7,10 @@ Dark premium palette: deep charcoal + electric violet + amber.
 
 **Not** the PreSolved marketing site.
 
+## Repository
+
+Hosted at **https://github.com/PreSolvedxAreyci/juankibin-space** (org fallback — personal `@juankibin` create was blocked by PAT permissions).
+
 ## Stack
 
 - [Astro 5](https://astro.build/) static SSG
